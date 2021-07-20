@@ -1,0 +1,1 @@
+sudo apt-get install build-dep python-psycopg2
