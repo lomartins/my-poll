@@ -1,18 +1,29 @@
-
-version: '3'
+version: '3.8'
 
 services:
   db:
     image: postgres
-    environment:
-      POSTGRES_PASSWORD: "postgres"
     ports:
-      - "15432:5432"
+      - 15432:5432
     volumes:
-      - /home/lucaomartins/projects/my-poll/postgresql/data
-    networks:
-      - postgres-compose-network
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=poll_app
+    env_file:
+      - .env
+  web:
+    build: ./services/web
+    command: python run.py run -h 0.0.0.0
+    links:
+      - db
+    volumes:
+      - ./services/web/:/usr/src/app/
+    ports:
+      - 5000:5000
+    env_file:
+      - .env
 
-networks: 
-  postgres-compose-network:
-    driver: bridge
+volumes:
+  postgres_data:
