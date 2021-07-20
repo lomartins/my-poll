@@ -10,6 +10,7 @@ POSTGRES_URL = f'postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@db:5432/poll_a
 app = Flask(__name__)
 app.secret_key = 'development key'
 app.config['SQLALCHEMY_DATABASE_URI'] = POSTGRES_URL
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 
