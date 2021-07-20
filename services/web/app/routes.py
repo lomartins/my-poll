@@ -1,5 +1,8 @@
-from flask import render_template, redirect, url_for, request
-from .model import Poll, Choice, Vote
+from flask import render_template, redirect, url_for, request, flash
+from flask_login import login_user
+
+from .login import LoginForm
+from .models import Poll, Choice, Vote, User
 from .poll_app import db, app
 
 
@@ -28,3 +31,19 @@ def create_vote(poll_id):
     db.session.add(vote)
     db.session.commit()
     return redirect(url_for('poll_page', poll_id=poll_id))
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm(request.form)
+    if form.validate_on_submit():
+        user = User.query.filter_by(name=form.username.data).first()
+        login_user(user)
+        origin_url = request.args.get('origin')
+        flash('Logged in successfully.')
+        return redirect(origin_url or url_for('home_page'))
+
+    if form.is_submitted():
+        flash('Login or password incorrect.')
+
+    return render_template('login.html', form=form)
