@@ -2,7 +2,7 @@
 {% block content %}
     <!-- Create page to render poll with choices -->
     <div class="poll">
-        <form action="{{ url_for('create_vote', poll_id=poll_id) }}" method="post">
+        <form action="{{ url_for('Polls.create_vote', poll_id=poll_id) }}" method="post">
         <h2>{{ poll.question }}</h2>
         <input type="hidden" name="user" value="1">
         <ul>
