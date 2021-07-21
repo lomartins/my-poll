@@ -15,7 +15,8 @@ services:
       - .env
   web:
     build: ./services/web
-    command: python run.py run -h 0.0.0.0
+    command: >
+        bash -c "pip install -r requirements.txt && python run.py run -h 0.0.0.0"
     links:
       - db
     volumes:

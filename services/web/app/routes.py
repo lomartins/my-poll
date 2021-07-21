@@ -1,5 +1,8 @@
-from flask import render_template, redirect, url_for, request
-from .model import Poll, Choice, Vote
+from flask import render_template, redirect, url_for, request, flash
+from flask_login import login_user, login_required, logout_user, current_user
+
+from .login import LoginForm, SignUpForm
+from .models import Poll, Choice, Vote, User
 from .poll_app import db, app
 
 
@@ -28,3 +31,53 @@ def create_vote(poll_id):
     db.session.add(vote)
     db.session.commit()
     return redirect(url_for('poll_page', poll_id=poll_id))
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm(request.form)
+
+    if current_user.is_authenticated:
+        return redirect(url_for('home_page'))
+
+    if form.validate_on_submit():
+        user = User.query.filter_by(name=form.username.data).first()
+        login_user(user)
+        origin_url = request.args.get('origin')
+        flash('Logged in successfully.')
+        return redirect(origin_url or url_for('home_page'))
+
+    if form.is_submitted():
+        flash('Login or password incorrect.')
+
+    return render_template('login.html', form=form)
+
+
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    form = SignUpForm(request.form)
+
+    if current_user.is_authenticated:
+        return redirect(url_for('home_page'))
+
+    if form.validate_on_submit():
+        user = User(
+            name=form.username.data,
+            email=form.email.data,
+            password=form.password.data
+        )
+        db.session.add(user)
+        db.session.commit()
+        origin_url = request.args.get('origin')
+        login_user(user)
+        flash('Your new account has been created.')
+        return redirect(origin_url or url_for('home_page'))
+
+    return render_template('signup.html', form=form)
+
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('home_page'))
