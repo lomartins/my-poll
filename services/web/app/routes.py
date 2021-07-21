@@ -67,6 +67,7 @@ def signup():
             password=form.password.data
         )
         db.session.add(user)
+        db.session.commit()
         origin_url = request.args.get('origin')
         login_user(user)
         flash('Your new account has been created.')
