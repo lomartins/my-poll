@@ -3,4 +3,4 @@ from . import routes, models
 from . import login, poll
 
 app.register_blueprint(login.routes.blueprint)
-app.register_blueprint(poll.routes.blueprint)
+app.register_blueprint(poll.routes.blueprint, url_prefix='/poll')

@@ -8,7 +8,7 @@ from ..models import Poll, Choice, Vote
 blueprint = Blueprint('Polls', __name__)
 
 
-@blueprint.route('/poll/<int:poll_id>', methods=['GET', 'POST'])
+@blueprint.route('/<int:poll_id>', methods=['GET', 'POST'])
 def poll_page(poll_id):
     poll = Poll.query.get(poll_id)
     choices = Choice.query.filter_by(poll_id=poll_id).order_by(Choice.id.asc()).all()
