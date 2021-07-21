@@ -2,6 +2,7 @@ from datetime import datetime
 
 from flask_login import UserMixin
 
+from .hash import check_password_hash, generate_password_hash
 from .poll_app import db
 
 
@@ -14,10 +15,10 @@ class User(UserMixin, db.Model):
     def __init__(self, name, email, password):
         self.name = name
         self.email = email
-        self.password = password
+        self.password = generate_password_hash(password)
 
     def verify_password(self, password):
-        return password == self.password
+        return check_password_hash(self.password, password)
 
 
 class Poll(db.Model):

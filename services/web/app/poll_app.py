@@ -5,6 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 POSTGRES_USER = os.getenv('POSTGRES_USER', 'development')
 POSTGRES_PASSWORD = os.getenv('POSTGRES_PASSWORD', 'development')
+SALT_KEY = os.getenv('SALT_KEY', 'development')
 POSTGRES_URL = f'postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@db:5432/poll_app'
 
 app = Flask(__name__)
