@@ -46,6 +46,10 @@ def poll_result(poll_id):
     poll = Poll.query.get(poll_id)
     choices = Choice.query.filter_by(poll_id=poll_id).order_by(Choice.id.asc()).all()
 
+    if not poll.public_results:
+        if current_user.is_authenticated and poll.user_id != current_user.id:
+            return render_template('poll/poll_private_result.html', poll_id=poll_id)
+
     return render_template('poll/poll_result.html', poll=poll, choices=choices)
 
 
