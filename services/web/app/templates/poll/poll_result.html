@@ -1,0 +1,17 @@
+{% extends "template.html" %}
+{% from "_formhelpers.html" import render_field %}
+{% block content %}
+    <h2>Results: {{ poll.question }}</h2>
+    <table>
+        <tr>
+            <th>Choice</th>
+            <th>Votes</th>
+        </tr>
+        {% for choice in choices %}
+            <tr>
+                <td>{{ choice.choice }}</td>
+                <td>{{ choice.votes }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

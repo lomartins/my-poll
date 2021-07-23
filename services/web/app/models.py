@@ -26,6 +26,8 @@ class Poll(db.Model):
     question = db.Column(db.String(200))
     pub_date = db.Column(db.DateTime)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    # TODO: can be False default when manage page implemented
+    public_results = db.Column(db.Boolean, default=True)
 
     def __init__(self, question, pub_date=None):
         self.question = question
