@@ -1,6 +1,7 @@
 import os
 
 from flask import Flask
+from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 
 POSTGRES_USER = os.getenv('POSTGRES_USER', 'development')
@@ -14,3 +15,5 @@ app.secret_key = SECRET_KEY
 app.config['SQLALCHEMY_DATABASE_URI'] = POSTGRES_URL
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
+
+migrate = Migrate(app, db)
